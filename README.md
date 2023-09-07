@@ -84,7 +84,7 @@ Assumptions about the return data
 
 ## Class Diagram
 
-![ClassDiagram](github link to class diagram)
+![GroceryPlanner class diagram](https://github.com/comstogm/GroceryPlanner/assets/110064071/3be64f85-0142-47f9-b9cb-c5fd84f30bfb)
 
 ### Class Diagram Description
 
