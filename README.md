@@ -1,4 +1,4 @@
-#Project Name PlaceHolder
+# Grocery Planner
 
 ---
 
@@ -21,9 +21,7 @@ Add a description of the project:
 
 ## Storyboard
 
-[Link Text](Add link to storyboard)
-
-![PictureDescription](upload image to github, link here)
+[Link to Storyboard](https://it3048ccomsto.invisionapp.com/freehand/GroceryPlanner-znaD5UVdQ)
 
 ## Functional Requirements
 
