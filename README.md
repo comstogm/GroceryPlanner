@@ -5,7 +5,7 @@
 Design Document
 
 Gabriel Comstock
--
+Sheel Patel
 -
 -
 
@@ -113,7 +113,7 @@ ItemDAO and ILoggedItemDAO: Used by LoggedItemService to create persistent data.
 ## Scrum Roles
 
 - DevOps/Product Owner/Scrum Master:
-- Frontend Developer:
+- Frontend Developer: Sheel Patel
 - Integration Developer:
 
 ## Milestone
