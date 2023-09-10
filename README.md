@@ -4,7 +4,7 @@
 
 Design Document
 
-Gabriel Comstock
+Gabriel Comstock <br>
 Sheel Patel
 -
 -
