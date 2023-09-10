@@ -116,6 +116,8 @@ ItemDAO and ILoggedItemDAO: Used by LoggedItemService to create persistent data.
 - Frontend Developer:
 - Integration Developer:
 
+## Milestone
+https://github.com/comstogm/GroceryPlanner/milestone/1
 ## Weekly Meeting
 
 Time tbd
