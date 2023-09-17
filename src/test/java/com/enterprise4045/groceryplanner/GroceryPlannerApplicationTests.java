@@ -1,11 +1,10 @@
 package com.enterprise4045.groceryplanner;
 
-import dto.LoggedItem;
+import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import service.ILoggedItemService;
+import com.enterprise4045.groceryplanner.service.ILoggedItemService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

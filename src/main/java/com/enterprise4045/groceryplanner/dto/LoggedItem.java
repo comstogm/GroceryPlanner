@@ -1,4 +1,4 @@
-package dto;
+package com.enterprise4045.groceryplanner.dto;
 
 import lombok.Data;
 

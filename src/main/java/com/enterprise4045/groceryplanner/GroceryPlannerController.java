@@ -1,6 +1,6 @@
 package com.enterprise4045.groceryplanner;
 
-import dto.LoggedItem;
+import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

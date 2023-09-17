@@ -1,6 +1,6 @@
-package service;
+package com.enterprise4045.groceryplanner.service;
 
-import dto.LoggedItem;
+import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.stereotype.Component;
 
 @Component
