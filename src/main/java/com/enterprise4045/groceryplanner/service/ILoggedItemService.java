@@ -2,6 +2,8 @@ package com.enterprise4045.groceryplanner.service;
 
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 
+import java.util.List;
+
 public interface ILoggedItemService {
     /*
     Fetch a loggedItem with a given ID.
@@ -9,4 +11,8 @@ public interface ILoggedItemService {
     @return the matching loggedItem, or null if dne/ no matches.
      */
     LoggedItem fetchById(int id);
+
+    LoggedItem save(LoggedItem loggedItem) throws Exception;
+
+    List<LoggedItem> fetchAll();
 }
