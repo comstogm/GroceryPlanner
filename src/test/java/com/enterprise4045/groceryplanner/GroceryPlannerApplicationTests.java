@@ -28,10 +28,18 @@ class GroceryPlannerApplicationTests {
     }
 
     @Test
-    void fetchLoggedItemById_returnsBroccoli() throws Exception {
+    void fetchLoggedItemById_returnsBroccoliForID1() throws Exception {
         givenLoggedItemDataAreAvailable();
+        whenLoggedItem1AddedIsBroccoli();
         whenSearchLoggedItemWithId1();
         thenReturnBroccoliForId1();
+    }
+
+    private void whenLoggedItem1AddedIsBroccoli() {
+        LoggedItem broccoli = new LoggedItem();;
+        broccoli.setLoggedItemId("1");
+        broccoli.setDescription("Broccoli");
+        Mockito.when(loggedItemDAO.fetch(1)).thenReturn(broccoli);
     }
 
     private void givenLoggedItemDataAreAvailable() throws Exception {

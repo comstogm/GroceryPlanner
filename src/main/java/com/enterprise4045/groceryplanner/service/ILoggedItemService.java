@@ -12,6 +12,8 @@ public interface ILoggedItemService {
      */
     LoggedItem fetchById(int id);
 
+    void delete(int id) throws Exception;
+
     LoggedItem save(LoggedItem loggedItem) throws Exception;
 
     List<LoggedItem> fetchAll();
