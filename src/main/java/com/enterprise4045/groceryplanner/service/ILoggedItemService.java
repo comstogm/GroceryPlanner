@@ -10,5 +10,5 @@ public interface ILoggedItemService {
      */
     LoggedItem fetchById(int id);
 
-    LoggedItem save(LoggedItem loggedItem);
+    LoggedItem save(LoggedItem loggedItem) throws Exception;
 }

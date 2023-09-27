@@ -30,7 +30,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
-    public LoggedItem save(LoggedItem loggedItem) {
+    public LoggedItem save(LoggedItem loggedItem) throws Exception {
         return loggedItemDAO.save(loggedItem);
     }
 
