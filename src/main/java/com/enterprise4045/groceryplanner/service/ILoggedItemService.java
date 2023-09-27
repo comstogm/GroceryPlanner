@@ -9,4 +9,6 @@ public interface ILoggedItemService {
     @return the matching loggedItem, or null if dne/ no matches.
      */
     LoggedItem fetchById(int id);
+
+    LoggedItem save(LoggedItem loggedItem);
 }

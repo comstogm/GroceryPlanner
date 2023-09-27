@@ -1,10 +1,24 @@
 package com.enterprise4045.groceryplanner.service;
 
+import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.stereotype.Component;
 
 @Component
 public class LoggedItemServiceStub implements ILoggedItemService {
+
+    private ILoggedItemDAO loggedItemDAO;
+
+
+    public LoggedItemServiceStub(){
+
+    }
+
+    public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO){
+
+        this.loggedItemDAO = loggedItemDAO;
+    }
+
     @Override
     public LoggedItem fetchById(int id) {
 
@@ -14,4 +28,11 @@ public class LoggedItemServiceStub implements ILoggedItemService {
 
         return loggedItem;
     }
+
+    @Override
+    public LoggedItem save(LoggedItem loggedItem) {
+        return loggedItemDAO.save(loggedItem);
+    }
+
+
 }

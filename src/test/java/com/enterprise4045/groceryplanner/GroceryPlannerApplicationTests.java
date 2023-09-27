@@ -39,4 +39,20 @@ class GroceryPlannerApplicationTests {
         assertEquals("Broccoli", description);
     }
 
+    @Test
+    void saveLoggedItem_validateReturnLoggedItem() {
+        givenLoggedItemDataAreAvailable();
+        whenUserAddsANewItemAndSaves();
+        thenCreateNewItemRecordAndReturnIt();
+    }
+
+    private void whenUserAddsANewItemAndSaves() {
+        loggedItem.setLoggedItemId("2");
+        loggedItem.setDescription("Carrot");
+    }
+
+    private void thenCreateNewItemRecordAndReturnIt() {
+        LoggedItem createdloggedItem = loggedItemService.save(loggedItem);
+    }
+
 }
