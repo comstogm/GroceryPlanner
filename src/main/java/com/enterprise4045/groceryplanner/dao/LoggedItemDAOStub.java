@@ -21,7 +21,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO {
 
     @Override
     public List<LoggedItem> fetchAll() {
-        List<LoggedItem> returnLoggedItems = new ArrayList<>(allLoggedItems.values());
+        List<LoggedItem> returnLoggedItems = new ArrayList(allLoggedItems.values());
         return returnLoggedItems;
     }
 

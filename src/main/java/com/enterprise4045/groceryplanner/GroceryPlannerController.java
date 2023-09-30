@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class GroceryPlannerController {
 
     @Autowired
@@ -49,11 +49,12 @@ public class GroceryPlannerController {
     /*
     Creates a new item
      */
-    @PostMapping(value="/loggedItem", consumes="appplication/json", produces ="application/json")
-    public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) throws Exception {
+    @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
+    @ResponseBody
+    public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) {
         LoggedItem newLoggedItem = null;
         try {
-            loggedItemService.save(loggedItem);
+            newLoggedItem = loggedItemService.save(loggedItem);
         } catch (Exception e) {
             //TODO add logging
         }
