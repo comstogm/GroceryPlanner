@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -22,7 +23,23 @@ public class GroceryPlannerController {
     Handle the root (/) endpoint and return a start page.
      */
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        LoggedItem loggedItem = new LoggedItem();
+        loggedItem.setItemId(420);
+        loggedItem.setLoggedItemId("620");
+        loggedItem.setDescription("Milk");
+        model.addAttribute(loggedItem);
+        return "start";
+    }
+
+    @RequestMapping("/saveLoggedItem")
+    public String saveLoggedItem(LoggedItem loggedItem) {
+        try {
+            loggedItemService.save(loggedItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "start";
+        }
         return "start";
     }
 

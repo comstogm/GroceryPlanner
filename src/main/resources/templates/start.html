@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Grocery Planner</title>
 </head>
 <body>
-Some fun text
+    Some fun text
+    <p th:text="${loggedItem}"></p>
+
+    <form action="#" th:action="@{/saveLoggedItem}" th:object="${loggedItem}" method="GET">
+        <label>itemId</label><input type="text" name="itemId" th:field="*{itemId}"/><br />
+        <label>loggedItemId</label><input type="text" name="loggedItemId" th:field="*{loggedItemId}"/><br />
+        <label>Description</label><input type="text" name="description" th:field="*{description}"/>
+
+        <button name="submit" type="submit" value="0">submit</button>
+    </form>
 </body>
 </html>
