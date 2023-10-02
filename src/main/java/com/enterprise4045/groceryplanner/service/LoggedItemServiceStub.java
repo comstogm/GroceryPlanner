@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class LoggedItemServiceStub implements ILoggedItemService {
-@Autowired
+    @Autowired
     private ILoggedItemDAO loggedItemDAO;
 
 

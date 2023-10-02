@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class GroceryPlannerController {
     @Autowired
     ILoggedItemService loggedItemService;
@@ -25,7 +25,7 @@ public class GroceryPlannerController {
     /*
     Fetches all logged items
      */
-    @GetMapping("/loggeditem/")
+    @GetMapping("/loggedItem/")
     @ResponseBody
     public List<LoggedItem> fetchAllLoggedItems() {
         return loggedItemService.fetchAll();
@@ -34,7 +34,7 @@ public class GroceryPlannerController {
     /*
     Fetches logged item by id
      */
-    @GetMapping("/loggeditem/{id}/")
+    @GetMapping("/loggedItem/{id}/")
     public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -42,7 +42,7 @@ public class GroceryPlannerController {
     /*
     Creates a new item
      */
-    @PostMapping(value="/loggeditem", consumes="appplication/json", produces ="application/json")
+    @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
     public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) throws Exception {
         LoggedItem newloggedItem = null;
 
@@ -59,7 +59,7 @@ public class GroceryPlannerController {
     /*
     Deletes and item based on id
      */
-    @DeleteMapping("/loggeditem/{id}/")
+    @DeleteMapping("/loggedItem/{id}/")
     public ResponseEntity deleteLoggedItem(@PathVariable("id") String id) {
         return new ResponseEntity(HttpStatus.OK);
     }
