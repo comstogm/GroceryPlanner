@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GroceryPlannerController {
@@ -21,6 +22,7 @@ public class GroceryPlannerController {
     ILoggedItemService loggedItemService;
     /*
     Handle the root (/) endpoint and return a start page.
+    Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
     public String index(Model model) {
@@ -91,4 +93,18 @@ public class GroceryPlannerController {
         }
 
     }
+
+    /*
+    Get mapping for start.html search field
+     */
+    @GetMapping("/items")
+    public ResponseEntity searchItems(@RequestParam Map<String, String> requestParams) {
+        int params = requestParams.size();
+        String searchValue = requestParams.get("searchTerm");
+        return new ResponseEntity(HttpStatus.OK);
+    }
+//    @GetMapping("/items")
+//    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue ="None") String searchTerm) {
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
 }
