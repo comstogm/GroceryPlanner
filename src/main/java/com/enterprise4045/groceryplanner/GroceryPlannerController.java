@@ -107,4 +107,12 @@ public class GroceryPlannerController {
 //    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue ="None") String searchTerm) {
 //        return new ResponseEntity(HttpStatus.OK);
 //    }
+
+    /**
+     * @return superCoolPage placeholder page
+     */
+    @RequestMapping("/superCoolPage")
+    public String superCoolPage() {
+        return "superCoolPage";
+    }
 }
