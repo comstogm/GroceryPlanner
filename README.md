@@ -7,7 +7,6 @@ Design Document
 Gabriel Comstock <br>
 Sheel Patel<br>
 Osama Bondogji<br>
-Brandon Robinson<br>
 
 
 ## Introduction
@@ -116,7 +115,6 @@ ItemDAO and ILoggedItemDAO: Used by LoggedItemService to create persistent data.
 - DevOps/Product Owner/Scrum Master:
 - Frontend Developer: Sheel Patel
 - Integration Developer: Osama Bondogji
-- Integration Developer: Brandon Robinson
 
 ## Milestone
 https://github.com/comstogm/GroceryPlanner/milestone/1 
