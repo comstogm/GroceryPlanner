@@ -1,8 +1,10 @@
 package com.enterprise4045.groceryplanner;
 
 import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
+import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
+import com.enterprise4045.groceryplanner.service.LoggedItemServiceStub;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -101,7 +104,15 @@ public class GroceryPlannerController {
     public ResponseEntity searchItems(@RequestParam Map<String, String> requestParams) {
         int params = requestParams.size();
         String searchValue = requestParams.get("searchTerm");
-        return new ResponseEntity(HttpStatus.OK);
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity(items, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 //    @GetMapping("/items")
 //    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue ="None") String searchTerm) {
