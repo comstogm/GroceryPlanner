@@ -8,4 +8,8 @@ public interface ILoggedItemDAO {
     LoggedItem save(LoggedItem loggedItem);
 
     List<LoggedItem> fetchAll();
+
+    LoggedItem fetch(int id);
+
+    void delete(int id);
 }

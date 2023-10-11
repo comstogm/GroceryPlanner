@@ -25,11 +25,14 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     @Override
     public LoggedItem fetchById(int id) {
 
-        LoggedItem loggedItem = new LoggedItem();
-        loggedItem.setDescription("Broccoli");
-        loggedItem.setItemId(1);
+       LoggedItem foundloggedItem = loggedItemDAO.fetch(id);
 
-        return loggedItem;
+        return foundloggedItem;
+    }
+
+    @Override
+    public void delete(int id) throws Exception{
+        loggedItemDAO.delete(id);
     }
 
     @Override

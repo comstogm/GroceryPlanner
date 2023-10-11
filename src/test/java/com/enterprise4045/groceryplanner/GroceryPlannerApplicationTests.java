@@ -1,6 +1,7 @@
 package com.enterprise4045.groceryplanner;
 
 import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
+import com.enterprise4045.groceryplanner.dao.LoggedItemDAOStub;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.LoggedItemServiceStub;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,16 @@ class GroceryPlannerApplicationTests {
     @Test
     void fetchLoggedItemById_returnsBroccoli() throws Exception {
         givenLoggedItemDataAreAvailable();
+        whenLoggedItem01AddedIsBroccoli();
         whenSearchLoggedItemWithId1();
         thenReturnBroccoliForId1();
+    }
+
+    private void whenLoggedItem01AddedIsBroccoli() {
+        LoggedItem broccoli = new LoggedItem();
+        broccoli.setLoggedItemId("1");
+        broccoli.setDescription("Broccoli");
+        Mockito.when(loggedItemDAO.fetch(1)).thenReturn(broccoli);
     }
 
     private void givenLoggedItemDataAreAvailable() throws Exception{
