@@ -99,11 +99,10 @@ public class GroceryPlannerController {
 
     /*
     Get mapping for start.html search field
+    returns JSON list of items
      */
-    @GetMapping("/items")
-    public ResponseEntity searchItems(@RequestParam Map<String, String> requestParams) {
-        int params = requestParams.size();
-        String searchValue = requestParams.get("searchTerm");
+    @GetMapping(value="/items", consumes="application/json", produces ="application/json")
+    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
         try {
             List<Item> items = loggedItemService.fetchItems();
             HttpHeaders headers = new HttpHeaders();
@@ -114,10 +113,19 @@ public class GroceryPlannerController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @GetMapping("/items")
-//    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue ="None") String searchTerm) {
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
+
+    @GetMapping(value="/items")
+    public String searchItemsForm(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm, Model model) {
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            model.addAttribute("items", items);
+            return "items";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+//7:29
 
     /**
      * @return superCoolPage placeholder page

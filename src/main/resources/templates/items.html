@@ -9,8 +9,13 @@
 <body>
 <div th:replace="fragments/topnav :: navbar"></div>
 
-Hello there! from superCoolPage
+A list of placeholder items
+
+<div class="list-group" th:each="item : ${items}">
+    <a href="#" class="list-group-item list-group-item-action">
+        <p th:text="${item}" />
+    </a>
+</div>
 
 </body>
 </html>
-
