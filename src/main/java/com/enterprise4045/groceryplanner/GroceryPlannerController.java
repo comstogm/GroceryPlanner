@@ -7,18 +7,22 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class GroceryPlannerController {
+
+    private final ILoggedItemService loggedItemService;
     @Autowired
-    ILoggedItemService loggedItemService;
+    public GroceryPlannerController(ILoggedItemService loggedItemService) {
+        this.loggedItemService = loggedItemService;
+    }
+
     /*
-    Handle the root (/) endpoint and return a start page.
-     */
+        Handle the root (/) endpoint and return a start page.
+         */
     @RequestMapping("/")
     public String index() {
         return "start";
@@ -41,7 +45,7 @@ public class GroceryPlannerController {
         LoggedItem foundloggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(foundloggedItem, headers, HttpStatus.OK);
     }
 
     /*
