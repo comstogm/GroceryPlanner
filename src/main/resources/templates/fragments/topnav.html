@@ -15,7 +15,16 @@
       </div>
 
       <form class="d-flex" role="search" action="#" th:action="@{/items}" method="GET">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" id="searchTerm">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searchTerm" id="searchTerm" list="Item_Search">
+        <datalist id="Item_Search">
+          <option value="Milk"></option>
+          <option value="Bread"></option>
+          <option value="Cheese"></option>
+          <option value="Oats"></option>
+          <option value="Chicken"></option>
+          <option value="Cereal"></option>
+          <option value="Newspaper"></option>
+        </datalist>
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
 
