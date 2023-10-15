@@ -21,12 +21,18 @@ import java.util.Map;
 @Controller
 public class GroceryPlannerController {
 
-    @Autowired
+
     ILoggedItemService loggedItemService;
+
+    @Autowired
+    public GroceryPlannerController(ILoggedItemService loggedItemService) {
+        this.loggedItemService = loggedItemService;
+    }
+
     /*
-    Handle the root (/) endpoint and return a start page.
-    Populates the page w/ default LoggedItem
-     */
+        Handle the root (/) endpoint and return a start page.
+        Populates the page w/ default LoggedItem
+         */
     @RequestMapping("/")
     public String index(Model model) {
         LoggedItem loggedItem = new LoggedItem();
