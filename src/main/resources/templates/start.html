@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Grocery Planner</title>
-</head>
-<body>
-Some fun text
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Grocery Planner</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    </head>
+
+    <body>
+        <div th:replace="fragments/topnav :: navbar">
+        </div>
+
+        <form action="#" th:action="@{/saveLoggedItem}" th:object="${LoggedItem}" method="POST" enctype="multipart/form-data">
+
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Item ID</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="itemId">
+            </div>
+
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Description</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="description">
+            </div>
+
+            <input type="submit" value="Add Item"/>
+
+        </form>
+    </body>
 </html>
