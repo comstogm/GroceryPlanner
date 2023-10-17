@@ -2,6 +2,8 @@ package com.enterprise4045.groceryplanner;
 
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.util.List;
 public class GroceryPlannerController {
 
     private final ILoggedItemService loggedItemService;
+    Logger log = LoggerFactory.getLogger(this.getClass());
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
         this.loggedItemService = loggedItemService;
@@ -59,9 +62,9 @@ public class GroceryPlannerController {
                newloggedItem = loggedItemService.save(loggedItem);
            }
         catch (Exception e){
-               //TO-Do add logging
+            log.error("Error happened in createLoggedItem endpoint", e);
+            e.printStackTrace();
            }
-
            return newloggedItem;
     }
 
