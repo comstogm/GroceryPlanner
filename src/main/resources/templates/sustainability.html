@@ -13,19 +13,7 @@
 <div th:replace="fragments/topnav :: navbar">
 
 </div>
-
-
-
-Some fun text
-<p th:text="${LoggedItem}"></p>
-
-<form action="#" th:action="@{/saveLoggedItem}" th:object="${loggedItem}" method=""GET">
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text" id="inputGroup-sizing-sm">loggedItemId</span>
-    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="description" th:field="*{description}">
-</div>
-
-<label>Long Item ID </label> <input type="text" name="loggedItemId" th:field="*{loggedItemId}"/>
-<button name="submit" type="submit" value="0">Submit</button>
+<br/>
+Your sustainability rating is:100%
 </body>
 </html>

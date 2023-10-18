@@ -8,13 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.ui.Model;
 import java.util.List;
 
 @RestController
 public class GroceryPlannerController {
 
     private final ILoggedItemService loggedItemService;
+
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
         this.loggedItemService = loggedItemService;
@@ -24,9 +25,27 @@ public class GroceryPlannerController {
         Handle the root (/) endpoint and return a start page.
          */
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        LoggedItem loggedItem = new LoggedItem();
+        loggedItem.setDescription("Pawpaw fruit season");
+        loggedItem.setLoggedItemId("1003");
+        loggedItem.setItemId(84);
         return "start";
     }
+
+    @RequestMapping("/saveLoggedItem")
+    public String saveLoggedItem(LoggedItem loggedItem) throws Exception {
+        try {
+            loggedItemService.save(loggedItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "start";
+
+        }
+        return "start";
+    }
+
+
 
     /*
     Fetches all logged items
@@ -77,5 +96,19 @@ public class GroceryPlannerController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+    @GetMapping("/plants")
+    public ResponseEntity searchPlants(@RequestParam(value="searchTerm", required = false, defaultValue = "None" )String searchTerm){
+        String newSearchTerm = searchTerm +"";
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
+    /*
+        Handle the root (/) endpoint and return a start page.
+         */
+    @RequestMapping("/sustainability")
+    public String sustainability() {
+
+        return "sustainability";
     }
 }
