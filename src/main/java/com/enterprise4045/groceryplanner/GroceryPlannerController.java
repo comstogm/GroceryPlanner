@@ -30,6 +30,7 @@ public class GroceryPlannerController {
         loggedItem.setDescription("Pawpaw fruit season");
         loggedItem.setLoggedItemId("1003");
         loggedItem.setItemId(84);
+        model.addAttribute(loggedItem);
         return "start";
     }
 
