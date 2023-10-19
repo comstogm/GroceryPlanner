@@ -1,7 +1,9 @@
 package com.enterprise4045.groceryplanner.service;
 
+import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ILoggedItemService {
@@ -17,4 +19,5 @@ public interface ILoggedItemService {
     LoggedItem save(LoggedItem loggedItem) throws Exception;
 
     List<LoggedItem> fetchAll();
+    List<Item> fetchItems() throws IOException;
 }

@@ -1,5 +1,7 @@
 package com.enterprise4045.groceryplanner;
 
+import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
+import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
 import org.slf4j.Logger;
@@ -9,15 +11,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-@RestController
+@Controller
 public class GroceryPlannerController {
+
 
     private final ILoggedItemService loggedItemService;
     Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
         this.loggedItemService = loggedItemService;
@@ -25,9 +33,26 @@ public class GroceryPlannerController {
 
     /*
         Handle the root (/) endpoint and return a start page.
+        Populates the page w/ default LoggedItem
          */
     @RequestMapping("/")
-    public String index() {
+    public String index(Model model) {
+        LoggedItem loggedItem = new LoggedItem();
+        loggedItem.setItemId(420);
+        loggedItem.setLoggedItemId("620");
+        loggedItem.setDescription("Milk");
+        model.addAttribute(loggedItem);
+        return "start";
+    }
+
+    @RequestMapping("/saveLoggedItem")
+    public String saveLoggedItem(LoggedItem loggedItem) {
+        try {
+            loggedItemService.save(loggedItem);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "start";
+        }
         return "start";
     }
 
@@ -36,7 +61,7 @@ public class GroceryPlannerController {
      */
     @GetMapping("/loggedItem/")
     @ResponseBody
-    public List<LoggedItem> fetchAllLoggedItems() {
+    public List<LoggedItem> fetchallLoggedItems() {
         return loggedItemService.fetchAll();
     }
 
@@ -45,27 +70,26 @@ public class GroceryPlannerController {
      */
     @GetMapping("/loggedItem/{id}/")
     public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
-        LoggedItem foundloggedItem = loggedItemService.fetchById(Integer.parseInt(id));
+        LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity(foundloggedItem, headers, HttpStatus.OK);
+        return new ResponseEntity(foundLoggedItem, headers, HttpStatus.OK);
     }
 
     /*
     Creates a new item
      */
     @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
-    public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) throws Exception {
-        LoggedItem newloggedItem = null;
-
-        try{
-               newloggedItem = loggedItemService.save(loggedItem);
-           }
-        catch (Exception e){
+    @ResponseBody
+    public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) {
+        LoggedItem newLoggedItem = null;
+        try {
+            newLoggedItem = loggedItemService.save(loggedItem);
+        } catch (Exception e) {
             log.error("Error happened in createLoggedItem endpoint", e);
             e.printStackTrace();
-           }
-           return newloggedItem;
+        }
+        return newLoggedItem;
     }
 
     /*
@@ -80,5 +104,43 @@ public class GroceryPlannerController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    /*
+    Get mapping for start.html search field
+    returns JSON list of items
+     */
+    @GetMapping(value="/items", consumes="application/json", produces ="application/json")
+    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity(items, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value="/items")
+    public String searchItemsForm(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm, Model model) {
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            model.addAttribute("items", items);
+            return "items";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
+    }
+//7:29
+
+    /**
+     * @return superCoolPage placeholder page
+     */
+    @RequestMapping("/superCoolPage")
+    public String superCoolPage() {
+        return "superCoolPage";
     }
 }
