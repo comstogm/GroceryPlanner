@@ -24,14 +24,21 @@ public class GroceryPlannerController {
         Handle the root (/) endpoint and return a start page.
          */
     @RequestMapping("/")
-    public String index() {
-        return "start";
+    public ResponseEntity<String> index() {
+        String htmlResponse = "<html><body>"
+                + "<h1>Welcome to the Grocery Planner API!</h1>"
+                + "<p>Use the endpoints to interact with the API.</p>"
+                + "</body></html>";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_HTML);
+        return new ResponseEntity<>(htmlResponse, headers, HttpStatus.OK);
     }
 
-    /*
+
+    /*`
     Fetches all logged items
-     */
-    @GetMapping("/loggedItem/")
+     `*/
+    @GetMapping("/loggedItems/")
     @ResponseBody
     public List<LoggedItem> fetchAllLoggedItems() {
         return loggedItemService.fetchAll();
@@ -40,7 +47,7 @@ public class GroceryPlannerController {
     /*
     Fetches logged item by id
      */
-    @GetMapping("/loggedItem/{id}/")
+    @GetMapping("/loggedItems/{id}/")
     public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
         LoggedItem foundloggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
@@ -68,7 +75,7 @@ public class GroceryPlannerController {
     /*
     Deletes and item based on id
      */
-    @DeleteMapping("/loggedItem/{id}/")
+    @DeleteMapping("/loggedItems/{id}/")
     public ResponseEntity deleteLoggedItem(@PathVariable("id") String id) {
         try {
             loggedItemService.delete(Integer.parseInt(id));
