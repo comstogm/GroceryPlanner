@@ -62,22 +62,34 @@ public class GroceryPlannerController {
     Creates a new item
      */
     @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
-    public LoggedItem createLoggedItem(@RequestBody LoggedItem loggedItem) throws Exception {
-        LoggedItem newloggedItem = null;
-
-        try{
-               newloggedItem = loggedItemService.save(loggedItem);
-           }
-        catch (Exception e){
-               //TO-Do add logging
-           }
-
-           return newloggedItem;
+    public ResponseEntity<Object> createLoggedItem(@RequestBody LoggedItem loggedItem) {
+        // Validation
+        if (loggedItem.getDescription() == null || loggedItem.getDescription().isEmpty()) {
+            return new ResponseEntity<>("Description cannot be empty.", HttpStatus.BAD_REQUEST);
+        }
+        // Process the item
+        try {
+            LoggedItem newLoggedItem = loggedItemService.save(loggedItem);
+            return new ResponseEntity<>(newLoggedItem, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 
     /*
     Deletes and item based on id
      */
+
+    // Custom Exception for Item not found
+    public class ItemNotFoundException extends RuntimeException {
+        public ItemNotFoundException(String itemId) {
+            super("No item found with ID: " + itemId);
+        }
+    }
+
     @DeleteMapping("/loggedItems/{id}/")
     public ResponseEntity deleteLoggedItem(@PathVariable("id") String id) {
         try {
@@ -86,6 +98,7 @@ public class GroceryPlannerController {
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
 
     }
 }
