@@ -13,10 +13,6 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     private ILoggedItemDAO loggedItemDAO;
 
 
-    public LoggedItemServiceStub(){
-
-    }
-
     public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO){
 
         this.loggedItemDAO = loggedItemDAO;
