@@ -47,12 +47,15 @@ public class GroceryPlannerController {
     /*
     Fetches logged item by id
      */
-    @GetMapping("/loggedItems/{id}/")
-    public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
-        LoggedItem foundloggedItem = loggedItemService.fetchById(Integer.parseInt(id));
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity(foundloggedItem, headers, HttpStatus.OK);
+    @GetMapping("/logged-items/{id}/")
+    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) {
+        LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
+
+        if (foundLoggedItem == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(foundLoggedItem, HttpStatus.OK);
     }
 
     /*
