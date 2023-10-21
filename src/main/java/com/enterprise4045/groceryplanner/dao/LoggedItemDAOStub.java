@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public class LoggedItemDAOStub implements ILoggedItemDAO{
+
     /*
     * Create a new HashMap
     * Stores an Integer and a LoggedItem
@@ -20,6 +21,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     * Pars the Integer and set the Integer to be a loggedItemID
     * Add loggedItemID and loggedItem to the HashMap
     */
+
     @Override
     public LoggedItem save(LoggedItem loggedItem) {
         Integer loggedItemID = Integer.parseInt(loggedItem.getLoggedItemId());
@@ -30,22 +32,27 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     /*
     * Returns a list of all items in the HashMap
     */
+
     @Override
     public List<LoggedItem> fetchAll() {
         return new ArrayList<>(allLoggedItem.values());
     }
 
+
     /*
      * Returns a specific item from the HashMap
      */
+
     @Override
     public LoggedItem fetch(int id) {
         return allLoggedItem.get(id);
     }
 
+
     /*
      * Deletes a specific item from the HashMap
      */
+
     @Override
     public void delete(int id) {
         allLoggedItem.remove(id);
