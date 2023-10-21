@@ -6,6 +6,7 @@ import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.LoggedItemServiceStub;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,11 +18,12 @@ import static org.mockito.Mockito.*;
 class GroceryPlannerApplicationTests {
 
 
-//    @Autowired
+    @Autowired
     private ILoggedItemService loggedItemService;
-    private LoggedItem loggedItem = new LoggedItem();
+
     @MockBean
     private ILoggedItemDAO loggedItemDAO;
+    private LoggedItem loggedItem = new LoggedItem();
 
     @Test
     void contextLoads() {
@@ -43,7 +45,8 @@ class GroceryPlannerApplicationTests {
     }
 
     private void givenLoggedItemDataAreAvailable() throws Exception{
-        Mockito.when(loggedItemDAO.save(loggedItem))
+        Mockito.when(loggedItemDAO
+                .save(loggedItem))
                 .thenReturn(loggedItem);
         loggedItemService = new LoggedItemServiceStub(loggedItemDAO);
     }
@@ -73,7 +76,6 @@ class GroceryPlannerApplicationTests {
         LoggedItem createdloggedItem = loggedItemService.save(loggedItem);
         assertEquals(loggedItem, createdloggedItem);
         verify(loggedItemDAO, atLeastOnce()).save(loggedItem);
-       // verify(loggedItemDAO, atLeastOnce()).save(null);
     }
 
 }

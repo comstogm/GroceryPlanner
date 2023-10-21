@@ -1,20 +1,28 @@
 package com.enterprise4045.groceryplanner;
 
+import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.ui.Model;
+import java.io.IOException;
 import java.util.List;
 
-@RestController
+@Controller
 public class GroceryPlannerController {
 
+
     private final ILoggedItemService loggedItemService;
+     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
         this.loggedItemService = loggedItemService;
@@ -22,16 +30,27 @@ public class GroceryPlannerController {
 
     /*
         Handle the root (/) endpoint and return a start page.
+        Populates the page w/ default LoggedItem
          */
     @RequestMapping("/")
-    public ResponseEntity<String> index() {
-        String htmlResponse = "<html><body>"
-                + "<h1>Welcome to the Grocery Planner API!</h1>"
-                + "<p>Use the endpoints to interact with the API.</p>"
-                + "</body></html>";
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.TEXT_HTML);
-        return new ResponseEntity<>(htmlResponse, headers, HttpStatus.OK);
+    public String index(Model model) {
+        LoggedItem loggedItem = new LoggedItem();
+        loggedItem.setItemId(420);
+        loggedItem.setLoggedItemId("620");
+        loggedItem.setDescription("Milk");
+        model.addAttribute(loggedItem);
+        return "start";
+    }
+
+    @RequestMapping("/saveLoggedItem")
+    public String saveLoggedItem(LoggedItem loggedItem) {
+        try {
+            loggedItemService.save(loggedItem);
+        } catch (Exception e) {
+            log.error("Error in saveLoggedItem endpoint", e);
+            return "start";
+        }
+        return "start";
     }
 
 
@@ -47,22 +66,23 @@ public class GroceryPlannerController {
     /*
     Fetches logged item by id
      */
-    @GetMapping("/logged-items/{id}/")
-    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) {
+  @GetMapping("/loggedItem/{id}/")
+    public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
         LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
-
-        if (foundLoggedItem == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (foundLoggedItem==null) {
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(foundLoggedItem, HttpStatus.OK);
+        return new ResponseEntity<>(foundLoggedItem, headers, HttpStatus.OK);
+    }
     }
 
     /*
     Creates a new item
      */
     @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
-    public ResponseEntity<Object> createLoggedItem(@RequestBody LoggedItem loggedItem) {
+    public ResponseEntity<LoggedItem> createLoggedItem(@RequestBody LoggedItem loggedItem) {
         // Validation
         if (loggedItem.getDescription() == null || loggedItem.getDescription().isEmpty()) {
             return new ResponseEntity<>("Description cannot be empty.", HttpStatus.BAD_REQUEST);
@@ -76,20 +96,13 @@ public class GroceryPlannerController {
         } catch (Exception e) {
             return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
     }
 
 
     /*
     Deletes and item based on id
      */
-
-    // Custom Exception for Item not found
-    public class ItemNotFoundException extends RuntimeException {
-        public ItemNotFoundException(String itemId) {
-            super("No item found with ID: " + itemId);
-        }
-    }
-
     @DeleteMapping("/loggedItems/{id}/")
     public ResponseEntity deleteLoggedItem(@PathVariable("id") String id) {
         try {
@@ -100,5 +113,42 @@ public class GroceryPlannerController {
         }
 
 
+    }
+
+    /*
+    Get mapping for start.html search field
+    returns JSON list of items
+     */
+    @GetMapping(value="/items", consumes="application/json", produces ="application/json")
+    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            return new ResponseEntity(items, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("Error in searchItems endpoint", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value="/items")
+    public String searchItemsForm(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm, Model model) {
+        try {
+            List<Item> items = loggedItemService.fetchItems();
+            model.addAttribute("items", items);
+            return "items";
+        } catch (IOException e) {
+            log.error("Error in searchItemsForm endpoint", e);
+            return "error";
+        }
+    }
+
+    /**
+     * @return superCoolPage placeholder page
+     */
+    @RequestMapping("/superCoolPage")
+    public String superCoolPage() {
+        return "superCoolPage";
     }
 }
