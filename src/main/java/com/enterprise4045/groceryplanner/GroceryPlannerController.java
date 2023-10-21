@@ -1,6 +1,5 @@
 package com.enterprise4045.groceryplanner;
 
-import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
@@ -14,17 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class GroceryPlannerController {
 
 
     private final ILoggedItemService loggedItemService;
-    Logger log = LoggerFactory.getLogger(this.getClass());
+     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
@@ -50,7 +47,7 @@ public class GroceryPlannerController {
         try {
             loggedItemService.save(loggedItem);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in saveLoggedItem endpoint", e);
             return "start";
         }
         return "start";
@@ -61,7 +58,7 @@ public class GroceryPlannerController {
      */
     @GetMapping("/loggedItem/")
     @ResponseBody
-    public List<LoggedItem> fetchallLoggedItems() {
+    public List<LoggedItem> fetchAllLoggedItems() {
         return loggedItemService.fetchAll();
     }
 
@@ -87,7 +84,6 @@ public class GroceryPlannerController {
             newLoggedItem = loggedItemService.save(loggedItem);
         } catch (Exception e) {
             log.error("Error happened in createLoggedItem endpoint", e);
-            e.printStackTrace();
         }
         return newLoggedItem;
     }
@@ -118,7 +114,7 @@ public class GroceryPlannerController {
             headers.setContentType(MediaType.APPLICATION_JSON);
             return new ResponseEntity(items, headers, HttpStatus.OK);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error in searchItems endpoint", e);
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -130,7 +126,7 @@ public class GroceryPlannerController {
             model.addAttribute("items", items);
             return "items";
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error in searchItemsForm endpoint", e);
             return "error";
         }
     }
