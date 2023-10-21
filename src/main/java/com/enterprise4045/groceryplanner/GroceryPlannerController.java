@@ -19,9 +19,8 @@ import java.util.List;
 @Controller
 public class GroceryPlannerController {
 
-
     private final ILoggedItemService loggedItemService;
-     private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
@@ -29,9 +28,9 @@ public class GroceryPlannerController {
     }
 
     /*
-        Handle the root (/) endpoint and return a start page.
-        Populates the page w/ default LoggedItem
-         */
+    Handle the root (/) endpoint and return a start page.
+    Populates the page w/ default LoggedItem
+     */
     @RequestMapping("/")
     public String index(Model model) {
         LoggedItem loggedItem = new LoggedItem();
@@ -42,7 +41,7 @@ public class GroceryPlannerController {
         return "start";
     }
 
-    @RequestMapping("/saveLoggedItem")
+    @RequestMapping("/saveLoggedItems")
     public String saveLoggedItem(LoggedItem loggedItem) {
         try {
             loggedItemService.save(loggedItem);
@@ -56,7 +55,7 @@ public class GroceryPlannerController {
 
     /*`
     Fetches all logged items
-     `*/
+    `*/
     @GetMapping("/loggedItems/")
     @ResponseBody
     public List<LoggedItem> fetchAllLoggedItems() {
@@ -66,8 +65,8 @@ public class GroceryPlannerController {
     /*
     Fetches logged item by id
      */
-  @GetMapping("/loggedItem/{id}/")
-    public ResponseEntity fetchLoggedItemById(@PathVariable("id") String id) {
+    @GetMapping("/loggedItems/{id}/")
+    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) {
         LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -76,13 +75,12 @@ public class GroceryPlannerController {
         }
         return new ResponseEntity<>(foundLoggedItem, headers, HttpStatus.OK);
     }
-    }
 
     /*
     Creates a new item
      */
-    @PostMapping(value="/loggedItem", consumes="application/json", produces ="application/json")
-    public ResponseEntity<LoggedItem> createLoggedItem(@RequestBody LoggedItem loggedItem) {
+    @PostMapping(value="/loggedItems", consumes="application/json", produces ="application/json")
+    public ResponseEntity<Object> createLoggedItem(@RequestBody LoggedItem loggedItem) {
         // Validation
         if (loggedItem.getDescription() == null || loggedItem.getDescription().isEmpty()) {
             return new ResponseEntity<>("Description cannot be empty.", HttpStatus.BAD_REQUEST);
@@ -96,23 +94,19 @@ public class GroceryPlannerController {
         } catch (Exception e) {
             return new ResponseEntity<>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
-
 
     /*
     Deletes and item based on id
      */
     @DeleteMapping("/loggedItems/{id}/")
-    public ResponseEntity deleteLoggedItem(@PathVariable("id") String id) {
+    public ResponseEntity<LoggedItem> deleteLoggedItem(@PathVariable("id") String id) {
         try {
             loggedItemService.delete(Integer.parseInt(id));
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-
     }
 
     /*
@@ -120,15 +114,15 @@ public class GroceryPlannerController {
     returns JSON list of items
      */
     @GetMapping(value="/items", consumes="application/json", produces ="application/json")
-    public ResponseEntity searchItems(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
+    public ResponseEntity<Object> searchItems(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm) {
         try {
             List<Item> items = loggedItemService.fetchItems();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            return new ResponseEntity(items, headers, HttpStatus.OK);
+            return new ResponseEntity<>(items, headers, HttpStatus.OK);
         } catch (IOException e) {
             log.error("Error in searchItems endpoint", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
