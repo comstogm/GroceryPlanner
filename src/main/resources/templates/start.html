@@ -26,7 +26,7 @@
 Some fun text
 <p th:text="${loggedItem}"></p>
 
-<form action="#" th:action="@{/saveLoggedItem}" th:object="${loggedItem}" method="GET">
+<form action="#" th:action="@{/saveLoggedItems}" th:object="${loggedItem}" method="GET">
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="itemId">itemId</span>
         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" th:field="*{itemId}">
