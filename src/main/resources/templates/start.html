@@ -23,7 +23,9 @@
 <body>
 <div th:replace="fragments/topnav :: navbar"></div>
 
-Some fun text
+<div class="container">
+    <div class="row">
+        <div class="col-4">
 <p th:text="${loggedItem}"></p>
 
 <form action="#" th:action="@{/saveLoggedItems}" th:object="${loggedItem}" method="GET">
@@ -42,6 +44,19 @@ Some fun text
 
     <button name="submit" type="submit" value="0">submit</button>
 </form>
+        </div>
+        <div class="col-4">
+            Retrofit placeholder items to easily add to list.
+        </div>
+        <div class="col-4">
+            <div class="list-group" th:each="item : ${itemList}">
+                <a href="#" class="list-group-item list-group-item-action">
+                    <p th:text="${item.description}" />
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

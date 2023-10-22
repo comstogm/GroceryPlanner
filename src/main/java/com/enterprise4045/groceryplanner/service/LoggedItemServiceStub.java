@@ -17,7 +17,6 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     private final ILoggedItemDAO loggedItemDAO;
     private IItemDAO itemDAO;
 
-    //public LoggedItemServiceStub() { }
     @Autowired
     public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO, IItemDAO itemDAO) {
         this.loggedItemDAO = loggedItemDAO;

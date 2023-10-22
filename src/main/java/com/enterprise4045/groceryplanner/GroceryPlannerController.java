@@ -38,13 +38,15 @@ public class GroceryPlannerController {
         loggedItem.setLoggedItemId("620");
         loggedItem.setDescription("Milk");
         model.addAttribute(loggedItem);
+        model.addAttribute("itemList", loggedItemService.fetchAll());
         return "start";
     }
 
     @RequestMapping("/saveLoggedItems")
-    public String saveLoggedItem(LoggedItem loggedItem) {
+    public String saveLoggedItem(LoggedItem loggedItem, Model model) {
         try {
             loggedItemService.save(loggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
         } catch (Exception e) {
             log.error("Error in saveLoggedItem endpoint", e);
             return "start";
@@ -56,7 +58,7 @@ public class GroceryPlannerController {
     /*`
     Fetches all logged items
     `*/
-    @GetMapping("/loggedItems/")
+    @GetMapping(value="/loggedItems/")
     @ResponseBody
     public List<LoggedItem> fetchAllLoggedItems() {
         return loggedItemService.fetchAll();
