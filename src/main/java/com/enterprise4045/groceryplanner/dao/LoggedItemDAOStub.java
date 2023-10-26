@@ -1,6 +1,10 @@
 package com.enterprise4045.groceryplanner.dao;
 
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.WriteResult;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -25,7 +29,10 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     @Override
     public LoggedItem save(LoggedItem loggedItem) {
         Integer loggedItemID = Integer.parseInt(loggedItem.getLoggedItemId());
-        allLoggedItem.put(loggedItemID, loggedItem);
+//        allLoggedItem.put(loggedItemID, loggedItem);
+//        return loggedItem;
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("test").document(loggedItem.getDescription()).set(loggedItem);
         return loggedItem;
     }
 
