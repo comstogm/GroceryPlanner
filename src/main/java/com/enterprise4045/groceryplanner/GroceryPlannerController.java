@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class GroceryPlannerController {
@@ -68,7 +69,7 @@ public class GroceryPlannerController {
     Fetches logged item by id
      */
     @GetMapping("/loggedItems/{id}/")
-    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) {
+    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) throws ExecutionException, InterruptedException {
         LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

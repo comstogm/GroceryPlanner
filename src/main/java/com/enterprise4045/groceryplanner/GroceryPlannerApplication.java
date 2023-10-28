@@ -26,7 +26,6 @@ public class GroceryPlannerApplication {
 
         FirebaseApp.initializeApp(options);
 
-
         SpringApplication.run(GroceryPlannerApplication.class, args);
     }
 }

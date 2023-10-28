@@ -5,6 +5,7 @@ import com.enterprise4045.groceryplanner.dto.LoggedItem;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface ILoggedItemService {
     /*
@@ -12,7 +13,7 @@ public interface ILoggedItemService {
     @param id a unique identifier for a loggedItem.
     @return the matching loggedItem, or null if dne/ no matches.
      */
-    LoggedItem fetchById(int id);
+    LoggedItem fetchById(int id) throws ExecutionException, InterruptedException;
 
     void delete(int id) throws Exception;
 
