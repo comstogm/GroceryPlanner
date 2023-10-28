@@ -20,11 +20,8 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     private final Firestore dbFirestore = FirestoreClient.getFirestore();
 
     /*
-    * Create a new HashMap
-    * Stores an Integer and a LoggedItem
-    */
-    HashMap<Integer, LoggedItem> allLoggedItem = new HashMap<>();
-
+     * Creates new List to store LoggedItems
+     */
     ArrayList<LoggedItem> allLoggedItems = new ArrayList<>();
 
     /*
