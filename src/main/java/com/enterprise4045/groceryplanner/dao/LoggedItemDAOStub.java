@@ -33,7 +33,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     */
     @Override
     public LoggedItem save(LoggedItem loggedItem) {
-        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("test").document(loggedItem.getDescription()).set(loggedItem);
+        ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("test").document().set(loggedItem);
         return loggedItem;
     }
 
@@ -48,9 +48,13 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
         // allSnapshot.get() blocks on response
         List<QueryDocumentSnapshot> documents = allSnapshot.get().getDocuments();
 
+        //empty list
+        allLoggedItems.clear();
+
         // iterate over documents and add them to allLoggedItems
         for (QueryDocumentSnapshot document : documents) {
             LoggedItem foundLoggedItem = document.toObject(LoggedItem.class);
+
             allLoggedItems.add(foundLoggedItem);
         }
 
@@ -94,7 +98,23 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
      * Deletes a specific item from the HashMap
      */
     @Override
-    public void delete(int id) {
-        allLoggedItem.remove(id);
+    public void delete(int id) throws ExecutionException, InterruptedException {
+        // Create reference to test collection
+        CollectionReference test = dbFirestore.collection("test");
+
+        // Create a query against the test collection
+        Query query = test.whereEqualTo("loggedItemId", String.valueOf(id));
+
+        // Retrieve query results asynchronously using query.get()
+        ApiFuture<QuerySnapshot> querySnapshot = query.get();
+
+        /*
+         * For each query result, delete based on documentId
+         */
+        for (DocumentSnapshot docs : querySnapshot.get().getDocuments()) {
+            if(docs.exists()) {
+                dbFirestore.collection("test").document(docs.getId()).delete();
+            }
+        }
     }
 }

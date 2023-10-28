@@ -12,5 +12,5 @@ public interface ILoggedItemDAO {
 
     LoggedItem fetch(int id) throws ExecutionException, InterruptedException;
 
-    void delete(int id);
+    void delete(int id) throws ExecutionException, InterruptedException;
 }
