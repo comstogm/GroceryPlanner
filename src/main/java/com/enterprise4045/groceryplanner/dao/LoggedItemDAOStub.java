@@ -13,29 +13,21 @@ import java.util.concurrent.ExecutionException;
 @Repository
 public class LoggedItemDAOStub implements ILoggedItemDAO{
 
-    /*
-     * Initialize dbFirestore connection
-     */
+    /* Initialize dbFirestore connection */
     private final Firestore dbFirestore = FirestoreClient.getFirestore();
 
-    /*
-     * Creates new List to store LoggedItems
-     */
+    /* Creates new List to store LoggedItems */
     ArrayList<LoggedItem> allLoggedItems = new ArrayList<>();
 
-    /*
-    * Saves LoggedItem to Firebase Firestore
-    * Returns LoggedItem
-    */
+    /* Saves LoggedItem to Firebase Firestore
+    Returns LoggedItem */
     @Override
     public LoggedItem save(LoggedItem loggedItem) {
         ApiFuture<WriteResult> collectionsApiFuture = dbFirestore.collection("test").document().set(loggedItem);
         return loggedItem;
     }
 
-    /*
-    * Returns a list of all items in the HashMap
-    */
+    /* Returns a list of all items in the HashMap */
     @Override
     public List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException {
         // asynchronously retrieve all documents
@@ -44,10 +36,10 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
         // allSnapshot.get() blocks on response
         List<QueryDocumentSnapshot> documents = allSnapshot.get().getDocuments();
 
-        //empty list
+        // Empty list
         allLoggedItems.clear();
 
-        // iterate over documents and add them to allLoggedItems
+        // Iterate over documents and add them to allLoggedItems
         for (QueryDocumentSnapshot document : documents) {
             LoggedItem foundLoggedItem = document.toObject(LoggedItem.class);
 
@@ -58,9 +50,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     }
 
 
-    /*
-     * Returns a specific item from Firebase Firestore
-     */
+    /* Returns a specific item from Firebase Firestore */
     @Override
     public LoggedItem fetch(int id) throws ExecutionException, InterruptedException {
         // Create reference to test collection
@@ -90,9 +80,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     }
 
 
-    /*
-     * Deletes a specific item from the HashMap
-     */
+    /* Deletes a specific item from the Firebase Firestore */
     @Override
     public void delete(int id) throws ExecutionException, InterruptedException {
         // Create reference to test collection
@@ -104,9 +92,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
         // Retrieve query results asynchronously using query.get()
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-        /*
-         * For each query result, delete based on documentId
-         */
+        // For each query result, delete based on documentId
         for (DocumentSnapshot docs : querySnapshot.get().getDocuments()) {
             if(docs.exists()) {
                 dbFirestore.collection("test").document(docs.getId()).delete();
