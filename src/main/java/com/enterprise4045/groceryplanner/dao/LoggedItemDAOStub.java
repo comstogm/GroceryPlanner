@@ -25,6 +25,8 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     */
     HashMap<Integer, LoggedItem> allLoggedItem = new HashMap<>();
 
+    ArrayList<LoggedItem> allLoggedItems = new ArrayList<>();
+
     /*
     * Saves LoggedItem to Firebase Firestore
     * Returns LoggedItem
@@ -39,8 +41,20 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
     * Returns a list of all items in the HashMap
     */
     @Override
-    public List<LoggedItem> fetchAll() {
-        return new ArrayList<>(allLoggedItem.values());
+    public List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException {
+        // asynchronously retrieve all documents
+        ApiFuture<QuerySnapshot> allSnapshot = dbFirestore.collection("test").get();
+
+        // allSnapshot.get() blocks on response
+        List<QueryDocumentSnapshot> documents = allSnapshot.get().getDocuments();
+
+        // iterate over documents and add them to allLoggedItems
+        for (QueryDocumentSnapshot document : documents) {
+            LoggedItem foundLoggedItem = document.toObject(LoggedItem.class);
+            allLoggedItems.add(foundLoggedItem);
+        }
+
+        return allLoggedItems;
     }
 
 

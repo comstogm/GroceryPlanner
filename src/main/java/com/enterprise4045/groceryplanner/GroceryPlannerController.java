@@ -33,7 +33,7 @@ public class GroceryPlannerController {
     Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
-    public String index(Model model) {
+    public String index(Model model) throws ExecutionException, InterruptedException {
         LoggedItem loggedItem = new LoggedItem();
         loggedItem.setItemId(420);
         loggedItem.setLoggedItemId("620");
@@ -61,7 +61,7 @@ public class GroceryPlannerController {
     `*/
     @GetMapping(value="/loggedItems/")
     @ResponseBody
-    public List<LoggedItem> fetchAllLoggedItems() {
+    public List<LoggedItem> fetchAllLoggedItems() throws ExecutionException, InterruptedException {
         return loggedItemService.fetchAll();
     }
 

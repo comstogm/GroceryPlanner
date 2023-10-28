@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutionException;
 public interface ILoggedItemDAO {
     LoggedItem save(LoggedItem loggedItem);
 
-    List<LoggedItem> fetchAll();
+    List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException;
 
     LoggedItem fetch(int id) throws ExecutionException, InterruptedException;
 

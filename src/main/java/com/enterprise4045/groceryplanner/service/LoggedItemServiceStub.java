@@ -45,7 +45,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
-    public List<LoggedItem> fetchAll() {
+    public List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException {
         return loggedItemDAO.fetchAll();
     }
 
