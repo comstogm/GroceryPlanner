@@ -47,11 +47,11 @@
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="Description">Description</span>
         <input id="Item_Name" type="text" class="form-control" aria-label="Sizing example input"
-               aria-describedby="inputGroup-sizing-sm" name="itemName">
+               aria-describedby="inputGroup-sizing-sm" name="itemName" th:field="*{description}">
     </div>
 
     <button name="submit" type="submit" value="0">submit</button>
-    <input id="Item_Id" type="hidden" name="itemId" th:field="*{itemId}">
+    <input id="Item_Id" type="hidden" name="itemId" >
 </form>
         </div>
         <div class="col-4">
