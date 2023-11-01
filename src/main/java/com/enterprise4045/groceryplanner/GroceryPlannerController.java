@@ -158,7 +158,7 @@ public class GroceryPlannerController {
             List<Item> items = loggedItemService.fetchItems(); //Should have term in the brackets
             for (Item item: items) {
                 LabelValue labelValue = new LabelValue();
-                labelValue.setLabel(item.toString());
+                labelValue.setLabel(item.getDescription());
                 labelValue.setValue(item.getItemId());
                 allItemNames.add(labelValue);
             }
