@@ -1,6 +1,7 @@
 package com.enterprise4045.groceryplanner;
 
 import com.enterprise4045.groceryplanner.dto.Item;
+import com.enterprise4045.groceryplanner.dto.LabelValue;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -127,7 +129,8 @@ public class GroceryPlannerController {
     }
 
     @GetMapping(value="/items")
-    public String searchItemsForm(@RequestParam(value="searchTerm", required = false, defaultValue = "None") String searchTerm, Model model) {
+    public String searchItemsForm(@RequestParam(value="searchTerm", required = false,
+            defaultValue = "None") String searchTerm, Model model) {
         try {
             List<Item> items = loggedItemService.fetchItems();
             model.addAttribute("items", items);
@@ -144,5 +147,25 @@ public class GroceryPlannerController {
     @RequestMapping("/superCoolPage")
     public String superCoolPage() {
         return "superCoolPage";
+    }
+
+    @GetMapping("/itemNameAutoComplete")
+    @ResponseBody
+    public List<LabelValue> itemNameAutoComplete(@RequestParam(value = "term",
+            required = false, defaultValue = "") String term){
+        List<LabelValue> allItemNames = new ArrayList<LabelValue>();
+        try {
+            List<Item> items = loggedItemService.fetchItems(); //Should have term in the brackets
+            for (Item item: items) {
+                LabelValue labelValue = new LabelValue();
+                labelValue.setLabel(item.getDescription());
+                labelValue.setValue(item.getItemId());
+                allItemNames.add(labelValue);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+            return new ArrayList<LabelValue>();
+        }
+        return allItemNames;
     }
 }
