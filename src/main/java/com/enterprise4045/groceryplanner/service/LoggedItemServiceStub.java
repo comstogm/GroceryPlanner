@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class LoggedItemServiceStub implements ILoggedItemService {
@@ -17,7 +18,6 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     private final ILoggedItemDAO loggedItemDAO;
     private IItemDAO itemDAO;
 
-    //public LoggedItemServiceStub() { }
     @Autowired
     public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO, IItemDAO itemDAO) {
         this.loggedItemDAO = loggedItemDAO;
@@ -29,7 +29,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
         this.loggedItemDAO = loggedItemDAO;
     }
     @Override
-    public LoggedItem fetchById(int id) {
+    public LoggedItem fetchById(int id) throws ExecutionException, InterruptedException {
         LoggedItem foundLoggedItem = loggedItemDAO.fetch(id);
         return foundLoggedItem;
     }
@@ -45,7 +45,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
-    public List<LoggedItem> fetchAll() {
+    public List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException {
         return loggedItemDAO.fetchAll();
     }
 

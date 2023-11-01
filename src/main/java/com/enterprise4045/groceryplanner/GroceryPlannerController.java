@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class GroceryPlannerController {
@@ -34,19 +35,21 @@ public class GroceryPlannerController {
     Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
-    public String index(Model model) {
+    public String index(Model model) throws ExecutionException, InterruptedException {
         LoggedItem loggedItem = new LoggedItem();
         loggedItem.setItemId(420);
         loggedItem.setLoggedItemId("620");
         loggedItem.setDescription("Milk");
         model.addAttribute(loggedItem);
+        model.addAttribute("itemList", loggedItemService.fetchAll());
         return "start";
     }
 
     @RequestMapping("/saveLoggedItems")
-    public String saveLoggedItem(LoggedItem loggedItem) {
+    public String saveLoggedItem(LoggedItem loggedItem, Model model) {
         try {
             loggedItemService.save(loggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
         } catch (Exception e) {
             log.error("Error in saveLoggedItem endpoint", e);
             return "start";
@@ -58,9 +61,9 @@ public class GroceryPlannerController {
     /*`
     Fetches all logged items
     `*/
-    @GetMapping("/loggedItems/")
+    @GetMapping(value="/loggedItems/")
     @ResponseBody
-    public List<LoggedItem> fetchAllLoggedItems() {
+    public List<LoggedItem> fetchAllLoggedItems() throws ExecutionException, InterruptedException {
         return loggedItemService.fetchAll();
     }
 
@@ -68,7 +71,7 @@ public class GroceryPlannerController {
     Fetches logged item by id
      */
     @GetMapping("/loggedItems/{id}/")
-    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) {
+    public ResponseEntity<LoggedItem> fetchLoggedItemById(@PathVariable("id") String id) throws ExecutionException, InterruptedException {
         LoggedItem foundLoggedItem = loggedItemService.fetchById(Integer.parseInt(id));
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

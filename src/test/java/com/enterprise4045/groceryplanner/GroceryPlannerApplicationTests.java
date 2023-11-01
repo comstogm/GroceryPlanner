@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.enterprise4045.groceryplanner.service.ILoggedItemService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -37,7 +39,7 @@ class GroceryPlannerApplicationTests {
         thenReturnBroccoliForId1();
     }
 
-    private void whenLoggedItem01AddedIsBroccoli() {
+    private void whenLoggedItem01AddedIsBroccoli() throws ExecutionException, InterruptedException {
         LoggedItem broccoli = new LoggedItem();
         broccoli.setLoggedItemId("1");
         broccoli.setDescription("Broccoli");
@@ -51,7 +53,7 @@ class GroceryPlannerApplicationTests {
         loggedItemService = new LoggedItemServiceStub(loggedItemDAO);
     }
 
-    private void whenSearchLoggedItemWithId1() {
+    private void whenSearchLoggedItemWithId1() throws ExecutionException, InterruptedException {
         loggedItem = loggedItemService.fetchById(1);
     }
 
