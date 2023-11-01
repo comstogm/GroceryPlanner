@@ -14,8 +14,13 @@
     <script type="text/javascript">
         $(function() {
             $("#Item_Name").autocomplete({
-                source: "items",
-                minLength: 3
+                source: "itemNameAutoComplete",
+                minLength: 3,
+                select: function(event, ui){
+                this.value = ui.item.label;
+                $("#Item_Id").val(ui.item.value);
+                return false;
+                }
             });
         });
     </script>
@@ -29,18 +34,22 @@ Some fun text
 <form action="#" th:action="@{/saveLoggedItems}" th:object="${loggedItem}" method="GET">
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="itemId">itemId</span>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" th:field="*{itemId}">
+        <input type="text" class="form-control" aria-label="Sizing example input"
+               aria-describedby="inputGroup-sizing-sm" th:field="*{itemId}">
     </div>
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="loggedItemId">loggedItemId</span>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" th:field="*{loggedItemId}">
+        <input type="text" class="form-control" aria-label="Sizing example input"
+               aria-describedby="inputGroup-sizing-sm" th:field="*{loggedItemId}">
     </div>
     <div class="input-group input-group-sm mb-3">
         <span class="input-group-text" id="Description">Description</span>
-        <input id="Item_Name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" th:field="*{description}">
+        <input id="Item_Name" type="text" class="form-control" aria-label="Sizing example input"
+               aria-describedby="inputGroup-sizing-sm" name="itemName">
     </div>
 
     <button name="submit" type="submit" value="0">submit</button>
+    <input id="Item_Id" type="hidden" name="itemId" th:field="*{itemId}">
 </form>
 
 </body>
