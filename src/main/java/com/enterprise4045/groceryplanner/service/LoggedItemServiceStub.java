@@ -5,6 +5,7 @@ import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
         this.loggedItemDAO = loggedItemDAO;
     }
     @Override
+    @Cacheable("LoggedItem")
     public LoggedItem fetchById(int id) throws ExecutionException, InterruptedException {
         LoggedItem foundLoggedItem = loggedItemDAO.fetch(id);
         return foundLoggedItem;
@@ -45,11 +47,13 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
+    @Cacheable("LoggedItems")
     public List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException {
         return loggedItemDAO.fetchAll();
     }
 
     @Override
+    @Cacheable("Items")
     public List<Item> fetchItems() throws IOException {
         return itemDAO.getItems();
     }
