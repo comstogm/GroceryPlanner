@@ -5,6 +5,7 @@ import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +38,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
+    @CacheEvict(value="LoggedItem", key="#id")
     public void delete(int id) throws Exception {
         loggedItemDAO.delete(id);
     }
