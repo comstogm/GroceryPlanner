@@ -24,7 +24,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
 
 
     private final ILoggedItemDAO loggedItemDAO;
-    private IItemDAO itemDAO;
+    private final IItemDAO itemDAO;
 
     @Autowired
     public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO, IItemDAO itemDAO) {
@@ -32,10 +32,6 @@ public class LoggedItemServiceStub implements ILoggedItemService {
         this.itemDAO = itemDAO;
     }
 
-    public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO) {
-
-        this.loggedItemDAO = loggedItemDAO;
-    }
     @Override
     @Cacheable(value = "LoggedItem",  key ="#id")
     public LoggedItem fetchById(int id) throws ExecutionException, InterruptedException {
@@ -68,9 +64,6 @@ public class LoggedItemServiceStub implements ILoggedItemService {
 
     @Override
     public void saveImage(MultipartFile imageFile) throws IOException {
-       String folder = "/photos/";
-        byte[] bytes = imageFile.getBytes();
-        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-        Files.write(path,  bytes);
+        loggedItemDAO.saveImage(imageFile);
     }
 }

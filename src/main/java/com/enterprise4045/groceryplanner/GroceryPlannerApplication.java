@@ -25,6 +25,7 @@ public class GroceryPlannerApplication {
 
         FirebaseOptions options = new FirebaseOptions.Builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setStorageBucket("groceryplanner-50668.appspot.com")
                 .build();
 
         FirebaseApp.initializeApp(options);

@@ -1,5 +1,6 @@
 package com.enterprise4045.groceryplanner;
 
+import com.enterprise4045.groceryplanner.dao.IItemDAO;
 import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dao.LoggedItemDAOStub;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
@@ -25,6 +26,7 @@ class GroceryPlannerApplicationTests {
 
     @MockBean
     private ILoggedItemDAO loggedItemDAO;
+    private IItemDAO itemDAO;
     private LoggedItem loggedItem = new LoggedItem();
 
     @Test
@@ -50,7 +52,7 @@ class GroceryPlannerApplicationTests {
         Mockito.when(loggedItemDAO
                 .save(loggedItem))
                 .thenReturn(loggedItem);
-        loggedItemService = new LoggedItemServiceStub(loggedItemDAO);
+        loggedItemService = new LoggedItemServiceStub(loggedItemDAO, itemDAO);
     }
 
     private void whenSearchLoggedItemWithId1() throws ExecutionException, InterruptedException {

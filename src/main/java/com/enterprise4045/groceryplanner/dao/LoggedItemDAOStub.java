@@ -3,9 +3,14 @@ package com.enterprise4045.groceryplanner.dao;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.cloud.StorageClient;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,6 +20,9 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
 
     /* Initialize dbFirestore connection */
     private final Firestore dbFirestore = FirestoreClient.getFirestore();
+
+    /* Initialize Firestore Storage connection */
+    private final Bucket bucket = StorageClient.getInstance().bucket();
 
     /* Creates new List to store LoggedItems */
     ArrayList<LoggedItem> allLoggedItems = new ArrayList<>();
@@ -62,7 +70,7 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
         // Retrieve query results asynchronously using query.get()
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
-        // For loop, could possibly return multiple items; todo()
+        // For loop, could possibly return multiple items; todo
         for (DocumentSnapshot document : querySnapshot.get().getDocuments()) {
 
             // Empty LoggedItem to hold results
@@ -99,4 +107,11 @@ public class LoggedItemDAOStub implements ILoggedItemDAO{
             }
         }
     }
+
+    @Override
+    public void saveImage(MultipartFile imageFile) throws IOException {
+        // Name defines how to access file. Need to save and handle name todo
+        bucket.create("name", imageFile.getBytes(), imageFile.getContentType());
+    }
+
 }
