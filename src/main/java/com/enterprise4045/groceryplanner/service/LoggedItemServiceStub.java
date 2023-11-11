@@ -46,6 +46,7 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
+    @CacheEvict(value="LoggedItems")
     public LoggedItem save(LoggedItem loggedItem) throws Exception {
         return loggedItemDAO.save(loggedItem);
     }
