@@ -169,6 +169,7 @@ public class GroceryPlannerController {
             }
         } catch (IOException e){
             e.printStackTrace();
+
             return new ArrayList<LabelValue>();
         }
         return allItemNames;
@@ -195,5 +196,6 @@ public class GroceryPlannerController {
         }
 
         return returnValue;
+
     }
 }
