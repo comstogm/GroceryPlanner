@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -170,5 +172,28 @@ public class GroceryPlannerController {
             return new ArrayList<LabelValue>();
         }
         return allItemNames;
+    }
+
+    @PostMapping("/uploadImage")
+    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile, Model model) {
+        String returnValue = "start";
+        try {
+            loggedItemService.saveImage(imageFile);
+            LoggedItem loggedItem = new LoggedItem();
+            model.addAttribute("loggedItem", loggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
+            returnValue = "start";
+        } catch (IOException e) {
+            log.error("Error in uploadImage endpoint", e);
+            returnValue = "error";
+        } catch (ExecutionException e) {
+            log.error("Execution Exception in uploadImage endpoint", e);
+            returnValue = "error";
+        } catch (InterruptedException e) {
+            log.error("Interrupted Exception in uploadImage endpoint", e);
+            returnValue = "error";
+        }
+
+        return returnValue;
     }
 }

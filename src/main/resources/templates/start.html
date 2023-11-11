@@ -63,6 +63,12 @@
                     <p th:text="${item.description}" />
                 </a>
             </div>
+            <div id="image-upload">
+                <form method="post" enctype="multipart/form-data" action="/uploadImage">
+                    <input type="file" name="imageFile" />
+                    <input type="submit" value="Upload" />
+                </form>
+            </div>
         </div>
     </div>
 </div>
