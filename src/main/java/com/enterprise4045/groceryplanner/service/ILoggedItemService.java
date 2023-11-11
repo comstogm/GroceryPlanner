@@ -2,6 +2,7 @@ package com.enterprise4045.groceryplanner.service;
 
 import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ILoggedItemService {
 
     List<LoggedItem> fetchAll() throws ExecutionException, InterruptedException;
     List<Item> fetchItems() throws IOException;
+
+    void saveImage(MultipartFile imageFile) throws IOException;
 }
