@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -59,5 +63,13 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     @Cacheable("Items")
     public List<Item> fetchItems() throws IOException {
         return itemDAO.getItems();
+    }
+
+    @Override
+    public void saveImage(MultipartFile imageFile) throws IOException {
+       String folder = "/photos/";
+        byte[] bytes = imageFile.getBytes();
+        Path path = Paths.get(folder + imageFile.getOriginalFilename());
+        Files.write(path,  bytes);
     }
 }
