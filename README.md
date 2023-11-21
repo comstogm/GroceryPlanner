@@ -1,3 +1,10 @@
+# Code Reviewers
+[Video: Create Firebase Project](https://youtu.be/5W6uc-AiZFs) <br>
+We are using Firebase for our database. Use the video above to create a new Firebase Project for use with our App.
+
+Or Message Gabriel Comstock comstogm@mail.uc.edu for our project's key.
+
+
 # Grocery Planner
 
 ---
