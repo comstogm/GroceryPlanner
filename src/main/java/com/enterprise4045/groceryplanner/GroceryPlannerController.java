@@ -37,14 +37,20 @@ public class GroceryPlannerController {
     Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
-    public String index(Model model) throws ExecutionException, InterruptedException {
-        LoggedItem loggedItem = new LoggedItem();
-        loggedItem.setItemId(420);
-        loggedItem.setLoggedItemId("620");
-        loggedItem.setDescription("Milk");
-        model.addAttribute(loggedItem);
-        model.addAttribute("itemList", loggedItemService.fetchAll());
-        return "start";
+    public String index(Model model) {
+        try {
+            LoggedItem loggedItem = new LoggedItem();
+            loggedItem.setItemId(420);
+            loggedItem.setLoggedItemId("620");
+            loggedItem.setDescription("Milk");
+            model.addAttribute(loggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
+            return "start";
+        } catch (Exception e) {
+            log.error("Error in index endpoint", e);
+            model.addAttribute("error", "An unexpected error occurred.");
+            return "error";
+        }
     }
 
     @RequestMapping("/saveLoggedItems")
@@ -52,13 +58,13 @@ public class GroceryPlannerController {
         try {
             loggedItemService.save(loggedItem);
             model.addAttribute("itemList", loggedItemService.fetchAll());
+            return "start";
         } catch (Exception e) {
             log.error("Error in saveLoggedItem endpoint", e);
-            return "start";
+            model.addAttribute("error", "An unexpected error occurred.");
+            return "error";
         }
-        return "start";
     }
-
 
     /*`
     Fetches all logged items
