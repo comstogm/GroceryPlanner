@@ -16,5 +16,5 @@ public interface ILoggedItemService {
 
     LoggedItem save(LoggedItem loggedItem) throws Exception;
 
-    List<LoggedItem> fetchAll();
+    List<LoggedItem> fetchAll() throws Exception;
 }
