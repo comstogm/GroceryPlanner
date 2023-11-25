@@ -9,41 +9,43 @@ import java.util.List;
 
 @Service
 public class LoggedItemServiceStub implements ILoggedItemService {
+
+    private final ILoggedItemDAO loggedItemDAO;
+
     @Autowired
-    private ILoggedItemDAO loggedItemDAO;
-
-
-    public LoggedItemServiceStub(){
-
-    }
-
     public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO){
-
         this.loggedItemDAO = loggedItemDAO;
     }
 
     @Override
-    public LoggedItem fetchById(int id) {
-
-       LoggedItem foundloggedItem = loggedItemDAO.fetch(id);
-
-        return foundloggedItem;
+    public LoggedItem fetchById(int id) throws Exception{
+        try {
+            return loggedItemDAO.fetch(id);
+        } catch (Exception e) {
+            throw new Exception("Cannot find loggedItem with " + id + ".");
+        }
     }
 
     @Override
-    public void delete(int id) throws Exception{
-        loggedItemDAO.delete(id);
+    public void delete(int id) throws Exception {
+        try {
+            loggedItemDAO.delete(id);
+        } catch (Exception e){
+            throw new Exception("Cannot find loggedItem with " + id + ".");
+        }
     }
 
     @Override
     public LoggedItem save(LoggedItem loggedItem) throws Exception {
-        return loggedItemDAO.save(loggedItem);
+        try {
+            return loggedItemDAO.save(loggedItem);
+        } catch (Exception e){
+            throw new Exception("Cannot find loggedItem: " + loggedItem.getDescription() + ".");
+        }
     }
 
     @Override
     public List<LoggedItem> fetchAll() {
         return loggedItemDAO.fetchAll();
     }
-
-
 }

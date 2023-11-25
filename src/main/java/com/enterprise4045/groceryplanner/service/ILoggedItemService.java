@@ -10,7 +10,7 @@ public interface ILoggedItemService {
     @param id a unique identifier for a loggedItem.
     @return the matching loggedItem, or null if dne/ no matches.
      */
-    LoggedItem fetchById(int id);
+    LoggedItem fetchById(int id) throws Exception;
 
     void delete(int id) throws Exception;
 
