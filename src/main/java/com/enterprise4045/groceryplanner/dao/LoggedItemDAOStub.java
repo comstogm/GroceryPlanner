@@ -11,32 +11,43 @@ import java.util.List;
 public class LoggedItemDAOStub implements ILoggedItemDAO{
 
     //Creates a new hash map when instantiating
-    HashMap<Integer, LoggedItem> allLoggedItem = new HashMap<>();
+    private final HashMap<Integer, LoggedItem> allLoggedItems;
+
+    public LoggedItemDAOStub(){
+        this.allLoggedItems = new HashMap<>();
+    }
 
     //Gets the key of the hashMap and adds the items to the database
     @Override
-    public LoggedItem save(LoggedItem loggedItem) {
+    public LoggedItem save(LoggedItem loggedItem) throws Exception {
+        if(loggedItem == null || loggedItem.getLoggedItemId() == null){
+            throw new Exception();
+        }
+
         Integer loggedItemID = Integer.parseInt(loggedItem.getLoggedItemId());
-        allLoggedItem.put(loggedItemID, loggedItem);
+        allLoggedItems.put(loggedItemID, loggedItem);
         return loggedItem;
     }
 
     //Gets all the loggedItems and returns them into a list
     @Override
     public List<LoggedItem> fetchAll() {
-        List<LoggedItem> returnLoggedItem = new ArrayList<>(allLoggedItem.values());
+        List<LoggedItem> returnLoggedItem = new ArrayList<>(allLoggedItems.values());
         return returnLoggedItem;
     }
 
     //Returns the loggedItem, given the ID
     @Override
     public LoggedItem fetch(int id) {
-        return allLoggedItem.get(id);
+        return allLoggedItems.get(id);
     }
 
     //Deletes the loggedItem from the database, given the ID
     @Override
-    public void delete(int id) {
-        allLoggedItem.remove(id);
+    public void delete(int id) throws Exception {
+        if(!allLoggedItems.containsKey(id)){
+            throw new Exception();
+        }
+        allLoggedItems.remove(id);
     }
 }
