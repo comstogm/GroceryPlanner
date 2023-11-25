@@ -76,13 +76,6 @@
                 <input id="Item_Id" type="hidden" name="itemId">
             </form>
 
-            <form method="post" enctype="multipart/form-data" action="/uploadImage">
-                <div class="form-group">
-                    <label for="uploadImageFile">Upload Image</label>
-                    <input type="file" class="form-control-file" id="uploadImageFile" name="imageFile"/>
-                </div>
-                <button class="btn btn-secondary" type="submit">Upload</button>
-            </form>
         </div>
         <div class="col-md-6">
             <p class="lead">Retrofit placeholder items to easily add to the list.</p>
@@ -94,10 +87,15 @@
         <div class="col-md-12">
             <h2 class="mt-4">Item List</h2>
             <div class="list-group" th:each="item : ${itemList}">
-                <a href="#" class="list-group-item list-group-item-action">
+                <div class="list-group-item">
                     <p class="mb-0" th:text="${item.description}"></p>
-                </a>
+                    <form th:action="@{/deleteLoggedItems}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="id" th:value="${item.loggedItemId}" />
+                        <button type="submit" value="Delete" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
             </div>
+
             <div id="image-upload">
                 <form method="post" enctype="multipart/form-data" action="/uploadImage">
                     <div class="form-group">

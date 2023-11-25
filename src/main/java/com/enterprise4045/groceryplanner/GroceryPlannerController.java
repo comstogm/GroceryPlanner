@@ -119,6 +119,28 @@ public class GroceryPlannerController {
     }
 
     /*
+     * Delete Mapping for HTML page, HTML cannot accept HTTP Delete request
+     */
+    @RequestMapping(value="/deleteLoggedItems", method = RequestMethod.POST)
+    public String deleteHTMLLoggedItem(@RequestParam String id, Model model) {
+        log.debug("Entering delete item endpoint");
+        try {
+            loggedItemService.delete(Integer.parseInt(id));
+            log.info("Item with ID " + id + " was deleted.");
+            LoggedItem loggedItem = new LoggedItem();
+            loggedItem.setItemId(420);
+            loggedItem.setLoggedItemId("620");
+            loggedItem.setDescription("Milk");
+            model.addAttribute(loggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
+        } catch (Exception e) {
+            log.error("Unable to delete the item with ID " + id+ ", message: "+ e.getMessage(), e);
+            return "error";
+        }
+        return "start";
+    }
+
+    /*
     Get mapping for start.html search field
     returns JSON list of items
      */
