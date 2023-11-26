@@ -5,17 +5,13 @@ import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
 import com.enterprise4045.groceryplanner.dto.Item;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,13 +36,16 @@ public class LoggedItemServiceStub implements ILoggedItemService {
     }
 
     @Override
-    @CacheEvict(value="LoggedItem", key ="#id")
+    @Caching(evict={
+            @CacheEvict(value="LoggedItem", key ="#id"),
+            @CacheEvict(value="LoggedItems", allEntries = true)
+    })
     public void delete(int id) throws Exception {
         loggedItemDAO.delete(id);
     }
 
     @Override
-    @CacheEvict(value="LoggedItems")
+    @CacheEvict(value="LoggedItems", allEntries = true)
     public LoggedItem save(LoggedItem loggedItem) throws Exception {
         return loggedItemDAO.save(loggedItem);
     }
