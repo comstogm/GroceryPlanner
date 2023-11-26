@@ -31,7 +31,6 @@ public class GroceryPlannerController {
     public GroceryPlannerController(ILoggedItemService loggedItemService) {
         this.loggedItemService = loggedItemService;
     }
-
     /*
     Handle the root (/) endpoint and return a start page.
     Populates the page w/ default LoggedItem
@@ -108,10 +107,13 @@ public class GroceryPlannerController {
      */
     @DeleteMapping("/loggedItems/{id}/")
     public ResponseEntity<LoggedItem> deleteLoggedItem(@PathVariable("id") String id) {
+        log.debug("Entering delete item endpoint");
         try {
             loggedItemService.delete(Integer.parseInt(id));
+            log.info("Item with ID " + id + " was deleted.");
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
+            log.error("Unable to delete the item with ID " + id+ ", message: "+ e.getMessage(), e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
