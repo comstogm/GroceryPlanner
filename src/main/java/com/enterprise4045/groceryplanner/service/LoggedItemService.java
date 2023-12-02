@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class LoggedItemServiceStub implements ILoggedItemService {
+public class LoggedItemService implements ILoggedItemService {
 
 
     private final ILoggedItemDAO loggedItemDAO;
     private final IItemDAO itemDAO;
 
     @Autowired
-    public LoggedItemServiceStub(ILoggedItemDAO loggedItemDAO, IItemDAO itemDAO) {
+    public LoggedItemService(ILoggedItemDAO loggedItemDAO, IItemDAO itemDAO) {
         this.loggedItemDAO = loggedItemDAO;
         this.itemDAO = itemDAO;
     }

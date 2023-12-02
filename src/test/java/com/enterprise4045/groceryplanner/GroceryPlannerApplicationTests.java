@@ -2,9 +2,8 @@ package com.enterprise4045.groceryplanner;
 
 import com.enterprise4045.groceryplanner.dao.IItemDAO;
 import com.enterprise4045.groceryplanner.dao.ILoggedItemDAO;
-import com.enterprise4045.groceryplanner.dao.LoggedItemDAOStub;
 import com.enterprise4045.groceryplanner.dto.LoggedItem;
-import com.enterprise4045.groceryplanner.service.LoggedItemServiceStub;
+import com.enterprise4045.groceryplanner.service.LoggedItemService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +51,7 @@ class GroceryPlannerApplicationTests {
         Mockito.when(loggedItemDAO
                 .save(loggedItem))
                 .thenReturn(loggedItem);
-        loggedItemService = new LoggedItemServiceStub(loggedItemDAO, itemDAO);
+        loggedItemService = new LoggedItemService(loggedItemDAO, itemDAO);
     }
 
     private void whenSearchLoggedItemWithId1() throws ExecutionException, InterruptedException {
