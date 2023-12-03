@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Controller
 public class GroceryPlannerController {
 
@@ -36,7 +39,8 @@ public class GroceryPlannerController {
     Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
-    public String index(Model model) throws ExecutionException, InterruptedException {
+    public String handleIndex(Model model) throws ExecutionException, InterruptedException {
+        log.info("Handling index request");
         LoggedItem loggedItem = new LoggedItem();
         loggedItem.setItemId(420);
         loggedItem.setLoggedItemId("620");
@@ -51,13 +55,13 @@ public class GroceryPlannerController {
         try {
             loggedItemService.save(loggedItem);
             model.addAttribute("itemList", loggedItemService.fetchAll());
+            return "start";
         } catch (Exception e) {
             log.error("Error in saveLoggedItem endpoint", e);
-            return "start";
+            model.addAttribute("error", "An unexpected error occurred.");
+            return "error";
         }
-        return "start";
     }
-
 
     /*`
     Fetches all logged items
