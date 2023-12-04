@@ -98,7 +98,7 @@ public class LoggedItemDAO implements ILoggedItemDAO{
         // Create a query against the test collection
         Query query = test.whereEqualTo("loggedItemId", String.valueOf(id));
 
-        // Retrieve query results asynchronously using query.get()
+        // Retrieve query results using query.get()
         ApiFuture<QuerySnapshot> querySnapshot = query.get();
 
         // For each query result, delete based on documentId

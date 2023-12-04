@@ -36,26 +36,73 @@ public class GroceryPlannerController {
     Populates the page w/ default LoggedItem
      */
     @RequestMapping("/")
-    public String index(Model model) throws ExecutionException, InterruptedException {
+    public String index(Model model) throws ExecutionException, InterruptedException, IOException {
         LoggedItem loggedItem = new LoggedItem();
+        Item item = new Item();
         loggedItem.setItemId(420);
         loggedItem.setLoggedItemId("620");
         loggedItem.setDescription("Milk");
-        model.addAttribute(loggedItem);
+        model.addAttribute("loggedItem", loggedItem);
+        model.addAttribute("item", item);
         model.addAttribute("itemList", loggedItemService.fetchAll());
+        model.addAttribute("retrofitItemsList", loggedItemService.fetchItems());
         return "start";
     }
 
     @RequestMapping("/saveLoggedItems")
-    public String saveLoggedItem(LoggedItem loggedItem, Model model) {
+    public String saveLoggedItem(LoggedItem loggedItem, Model model) throws IOException, ExecutionException, InterruptedException {
         try {
             loggedItemService.save(loggedItem);
             model.addAttribute("itemList", loggedItemService.fetchAll());
-        } catch (Exception e) {
+        } catch (IOException e) {
+            log.error("IOException in saveLoggedItem endpoint", e);
+            return "error";
+        } catch (ExecutionException e) {
+            log.error("ExecutionException in saveLoggedItem endpoint", e);
+            return "error";
+        } catch (InterruptedException e) {
+            log.error("InterruptedException in saveLoggedItem endpoint", e);
+            return "error";
+        }
+        catch (Exception e) {
             log.error("Error in saveLoggedItem endpoint", e);
             return "start";
         }
-        return "start";
+        return index(model);
+    }
+
+    @PostMapping(value="/saveLoggedItemsFromRetrofit")
+    public String saveLoggedItemsFromRetrofit(@RequestParam String id, Model model) throws IOException, ExecutionException, InterruptedException {
+
+        Integer newId = Integer.parseInt(id);
+        List<Item> retrofitItems = loggedItemService.fetchItems();
+        Item providedItem = new Item();
+
+        for (Item item : retrofitItems) {
+            if (item.getLoggedItemId().equals(newId.toString())) {
+                providedItem.setItemId(item.getItemId());
+                providedItem.setLoggedItemId(item.getLoggedItemId());
+                providedItem.setDescription(item.getDescription());
+            }
+        }
+
+
+        //new LoggedItem to convert from the retrofit Item
+        LoggedItem newLoggedItem = new LoggedItem();
+        newLoggedItem.setItemId(providedItem.getItemId());
+        newLoggedItem.setLoggedItemId(providedItem.getLoggedItemId());
+        newLoggedItem.setDescription(providedItem.getDescription());
+
+        try {
+            loggedItemService.save(newLoggedItem);
+            // adds newLoggedItem to model attribute for start.html
+            model.addAttribute(newLoggedItem);
+            model.addAttribute("itemList", loggedItemService.fetchAll());
+        } catch (Exception e) {
+            log.error("Error in saveLoggedItem endpoint", e);
+            return "error";
+        }
+        return index(model);
     }
 
 
@@ -122,7 +169,7 @@ public class GroceryPlannerController {
      * Delete Mapping for HTML page, HTML cannot accept HTTP Delete request
      */
     @RequestMapping(value="/deleteLoggedItems", method = RequestMethod.POST)
-    public String deleteHTMLLoggedItem(@RequestParam String id, Model model) {
+    public String deleteHTMLLoggedItem(@RequestParam String id, Model model) throws IOException, ExecutionException, InterruptedException {
         log.debug("Entering delete item endpoint");
         try {
             loggedItemService.delete(Integer.parseInt(id));
@@ -137,7 +184,7 @@ public class GroceryPlannerController {
             log.error("Unable to delete the item with ID " + id+ ", message: "+ e.getMessage(), e);
             return "error";
         }
-        return "start";
+        return index(model);
     }
 
     /*
