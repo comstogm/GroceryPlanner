@@ -78,8 +78,16 @@
 
         </div>
         <div class="col-md-6">
-            <p class="lead">Retrofit placeholder items to easily add to the list.</p>
-            <!-- Add additional content or features as needed -->
+            <p class="lead">Default items to add to the list</p>
+            <div class="list-group" th:each="rItem : ${retrofitItemsList}">
+                <div class="list-group-item">
+                    <p class="mb-0" th:text="${rItem.description}"></p>
+                    <form th:action="@{/saveLoggedItemsFromRetrofit}" method="POST">
+                        <input type="hidden" name="id" th:value="${rItem.loggedItemId}" />
+                        <button type="submit" value="POST" class="btn btn-primary btn-sm">Add to List</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
