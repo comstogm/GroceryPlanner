@@ -119,7 +119,7 @@ ItemDAO and ILoggedItemDAO: Used by LoggedItemService to create persistent data.
 
 ## Scrum Roles
 
-- DevOps/Product Owner/Scrum Master:
+- DevOps/Product Owner/Scrum Master: Gabriel Comstock
 - Frontend Developer: Sheel Patel
 - Integration Developer: Osama Bondogji
 
